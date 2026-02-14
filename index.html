@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy V-Day! ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            text-align: center;
+            color: #d63384;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 10;
+            max-width: 80%;
+        }
+
+        h1 { font-size: 3rem; margin-bottom: 0.5rem; }
+        p { font-size: 1.2rem; color: #555; }
+
+        .btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #ff6b81;
+            transform: scale(1.1) rotate(-2deg);
+        }
+
+        /* Floating Hearts Animation */
+        .heart {
+            position: absolute;
+            color: #ff4d4d;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Happy Valentine's Day! 💘</h1>
+        <p>To the couples: <i>Get a room!</i><br>
+           To the singles: <i>Our chocolate goes on sale tomorrow!</i><br>
+           To everyone: <i>You're doing great, sweetie.</i></p>
+        
+        <button class="btn" onclick="startTheParty()">CLICK FOR VIBES ✨</button>
+        <p id="status" style="font-size: 0.8rem; margin-top: 10px;"></p>
+    </div>
+
+    <script>
+        // Synthesizing a "Happy" background sound using Web Audio API
+        function playSynth() {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            const notes = [261.63, 329.63, 392.00, 523.25]; // C major chord vibes
+            
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                
+                gain.gain.setValueAtTime(0, ctx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.1);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 2);
+                
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                osc.start(ctx.currentTime + (i * 0.2));
+                osc.stop(ctx.currentTime + 2);
+            });
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = ['❤️','💖','✨','🍕','🍫'][Math.floor(Math.random() * 5)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        function startTheParty() {
+            document.getElementById('status').innerText = "🔊 Playing 'Synthetic Love' & dropping hearts!";
+            playSynth();
+            setInterval(createHeart, 300);
+        }
+    </script>
+</body>
+</html>
